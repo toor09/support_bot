@@ -1,5 +1,7 @@
 import sys
+from pathlib import Path
 
+from pathvalidate import sanitize_filepath
 from pydantic import BaseSettings, validator
 
 LEVELS = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
@@ -19,6 +21,19 @@ class Settings(BaseSettings):
     class Config:
         case_sensitive = True
         env_file = ".env"
+
+
+class DialogFlowSettings(Settings):
+    GOOGLE_APPLICATION_CREDENTIALS: Path
+    PROJECT_ID: str
+
+    @validator("GOOGLE_APPLICATION_CREDENTIALS")
+    def google_application_credentials(cls, v: Path) -> str:
+        if v == Path('.'):
+            raise ValueError(
+                "The value of GOOGLE_APPLICATION_CREDENTIALS is not set."
+            )
+        return f"{sanitize_filepath(file_path=v, platform='auto')}"
 
 
 class TelegramBotSettings(Settings):

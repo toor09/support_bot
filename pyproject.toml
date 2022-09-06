@@ -9,6 +9,8 @@ python = "^3.8"
 requests = "^2.28.1"
 pydantic = {extras = ["dotenv"], version = "^1.10.1"}
 python-telegram-bot = "^13.13"
+google-cloud-dialogflow = "^2.15.1"
+pathvalidate = "^2.5.2"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^5.0.4"

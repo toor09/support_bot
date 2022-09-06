@@ -39,12 +39,18 @@ cp .env.example .env
   <summary>Переменные окружения</summary>
   <pre>
     TG_BOT_TOKEN=
+    PROJECT_ID=
+    GOOGLE_APPLICATION_CREDENTIALS=
     LOGGING_LEVEL=ERROR
   </pre>
 </details>
 
 *** Для работы telegram чат-бота необходимо заполнить переменную окружения `TG_BOT_TOKEN`. ***
 
+*** Для интеграции с DialogFlow необходимо сначала создать новый проект и агента (затем указать переменную окружения `PROJECT_ID`). Далее создать и заполнить свою группу `intents`.
+[Подробнее, как создать проект и настроить агента](https://cloud.google.com/dialogflow/es/docs/quick/build-agent) ***
+
+*** Для подключения к своей группе с `intents` необходимо сгенерировать JSON ключ для подключения и в переменной окружения `GOOGLE_APPLICATION_CREDENTIALS` указать путь до файла. [Подробнее, как сгенерировать JSON ключ](https://habr.com/ru/post/502688/) ***
 
 ## Запуск линтеров
 
