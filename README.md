@@ -76,5 +76,10 @@ python3 generate_intents.py
 python3 tg_bot.py
 ```
 
+- Для запуска VK чат-бота вводим команду:
+```
+python3 vk_bot.py
+```
+
 ## Цели проекта
 Код написан в образовательных целях на онлайн-курсе для веб-разработчиков [Devman](https://dvmn.org).
