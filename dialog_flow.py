@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from google.cloud import dialogflow
 from google.cloud.dialogflow import DetectIntentResponse
@@ -8,8 +8,9 @@ def detect_intent_texts(
         project_id: str,
         session_id: str,
         texts: List[str],
-        language_code: str
-) -> DetectIntentResponse:
+        language_code: str,
+        skip_fallback: bool = False
+) -> Optional[DetectIntentResponse]:
     """Returns the result of detect intent with texts as inputs.
     Using the same `session_id` between requests allows continuation
     of the conversation."""
@@ -26,7 +27,8 @@ def detect_intent_texts(
         response = session_client.detect_intent(
             request={"session": session, "query_input": query_input}
         )
-
+    if skip_fallback and response.query_result.intent.is_fallback:
+        return None
     return response.query_result.fulfillment_text
 
 

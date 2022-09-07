@@ -19,17 +19,19 @@ def echo(event: Event, vk_api: Any, project_id: str) -> None:
     """Echo the user message."""
     try:
         dialog_flow_answer = detect_intent_texts(
-                project_id=project_id,
-                session_id=event.user_id,
-                texts=[event.text],
-                language_code="ru",
+            project_id=project_id,
+            session_id=event.user_id,
+            texts=[event.text],
+            language_code="ru",
+            skip_fallback=True
         )
-        vk_api.messages.send(
-            user_id=event.user_id,
-            message=f"{dialog_flow_answer}",
-            random_id=randint(1, 1000)
-        )
-        message = f"Support tg_bot send echo message:" \
+        if dialog_flow_answer:
+            vk_api.messages.send(
+                user_id=event.user_id,
+                message=f"{dialog_flow_answer}",
+                random_id=randint(1, 1000)
+            )
+        message = f"Support vk_bot send echo message:" \
                   f"{event.text=} {dialog_flow_answer=}"
         logger.debug(msg=message)
 
