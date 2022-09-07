@@ -11,6 +11,7 @@ pydantic = {extras = ["dotenv"], version = "^1.10.1"}
 python-telegram-bot = "^13.13"
 google-cloud-dialogflow = "^2.15.1"
 pathvalidate = "^2.5.2"
+vk-api = "^11.9.9"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^5.0.4"

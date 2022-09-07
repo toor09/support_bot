@@ -40,6 +40,10 @@ class TelegramBotSettings(Settings):
     TG_BOT_TOKEN: str
 
 
+class VKBotSettings(Settings):
+    VK_GROUP_TOKEN: str
+
+
 LOGGING_CONFIG = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -63,10 +67,23 @@ LOGGING_CONFIG = {
             "maxBytes": 10000,
             "backupCount": 10,
         },
+        "rotating_vk_bot_to_file": {
+            "level": Settings().LOGGING_LEVEL,
+            "class": "logging.handlers.RotatingFileHandler",
+            "formatter": "standard",
+            "filename": "support_vk_bot.log",
+            "maxBytes": 10000,
+            "backupCount": 10,
+        },
     },
     "loggers": {
         "tg_bot": {
             "handlers": ["default", "rotating_tg_bot_to_file"],
+            "level": Settings().LOGGING_LEVEL,
+            "propagate": True
+        },
+        "vk_bot": {
+            "handlers": ["default", "rotating_vk_bot_to_file"],
             "level": Settings().LOGGING_LEVEL,
             "propagate": True
         }
