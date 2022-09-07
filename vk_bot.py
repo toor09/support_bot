@@ -39,6 +39,10 @@ def echo(event: Event, vk_api: Any, project_id: str) -> None:
         message = "Something is wrong with connecting to DialogFlow :("
         logger.error(msg=message, exc_info=True)
 
+    except vk_api.exceptions.ApiError:
+        message = "Something is wrong with connecting to vk_api :("
+        logger.error(msg=message, exc_info=True)
+
 
 def start() -> None:
     """Start the vk bot."""
