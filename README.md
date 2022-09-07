@@ -57,6 +57,17 @@ cp .env.example .env
 ```
 isort . && flake8 . && mypy .
 ```
+## Подготовка перед запуском чат-бота для распознавания речи в Telegram и VK
+-  Для обучения агента в проекте DialogFlow необходимо создать новый набор `intents`.
+-  Для этого сначала нужно подготовить файл с набором новых `intents`. В качестве примера можно посмотреть структуру `JSON` файла по адресу:
+[https://dvmn.org/media/...](https://dvmn.org/media/filer_public/a7/db/a7db66c0-1259-4dac-9726-2d1fa9c44f20/questions.json)
+- После подготовки данного файла (по умолчанию, будет сохранен под именем `questions.json` в текущей папке) вводим команду:
+```
+python3 generate_intents.py
+```
+- Новые `intents` для обучения агента для DialogFlow готовы, теперь все готово для запуска чат-бота по распознаванию речи.
+
+*** При появлении ошибок типа `PermissionDenied: 403 IAM permission` 'dialogflow.intents.create'... необходимо в настройках к `JSON` ключу добавить новую роль: `DialogFlow Intent Admin` на странице [https://console.cloud.google.com/iam-admin/](https://console.cloud.google.com/iam-admin/iam?project=) ***
 
 ## Запуск чат-бота для распознавания речи в Telegram и VK
 
