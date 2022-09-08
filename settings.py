@@ -38,6 +38,7 @@ class DialogFlowSettings(Settings):
 
 class TelegramBotSettings(Settings):
     TG_BOT_TOKEN: str
+    TG_CHAT_ID: str
 
 
 class VKBotSettings(Settings):
@@ -75,15 +76,22 @@ LOGGING_CONFIG = {
             "maxBytes": 10000,
             "backupCount": 10,
         },
+        "telegram_bot": {
+            "class": "utils.TelegramLogsHandler",
+            "token": TelegramBotSettings().TG_BOT_TOKEN,
+            "chat_id": TelegramBotSettings().TG_CHAT_ID,
+            "level": Settings().LOGGING_LEVEL,
+            "formatter": "standard",
+        }
     },
     "loggers": {
         "tg_bot": {
-            "handlers": ["default", "rotating_tg_bot_to_file"],
+            "handlers": ["default", "rotating_tg_bot_to_file", "telegram_bot"],
             "level": Settings().LOGGING_LEVEL,
             "propagate": True
         },
         "vk_bot": {
-            "handlers": ["default", "rotating_vk_bot_to_file"],
+            "handlers": ["default", "rotating_vk_bot_to_file", "telegram_bot"],
             "level": Settings().LOGGING_LEVEL,
             "propagate": True
         }

@@ -39,6 +39,7 @@ cp .env.example .env
   <summary>Переменные окружения</summary>
   <pre>
     TG_BOT_TOKEN=
+    TG_CHAT_ID=
     VK_GROUP_TOKEN=
     PROJECT_ID=
     GOOGLE_APPLICATION_CREDENTIALS=
@@ -46,7 +47,7 @@ cp .env.example .env
   </pre>
 </details>
 
-*** Для работы telegram чат-бота необходимо заполнить переменную окружения `TG_BOT_TOKEN`. ***
+*** Для работы telegram чат-бота необходимо заполнить переменную окружения `TG_BOT_TOKEN`, `TG_CHAT_ID` . ***
 
 *** Для работы vk чат-бота необходимо заполнить переменную окружения `VK_GROUP_TOKEN` . Также нужно создать новое сообщество в [vk.com](https://vk.com) и разрешить боту отправку сообщений в настройках сообщества.***
 
