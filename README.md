@@ -85,5 +85,15 @@ python3 tg_bot.py
 python3 vk_bot.py
 ```
 
+## Примеры результата
+
+- Для [Telegram](https://t.me/dialog_flow_dvmn_bot):
+
+![tg_bot](static/tg_bot.gif)
+
+- Для [VK](https://vk.com/club215826439):
+
+![vk_bot](static/vk_bot.gif)
+
 ## Цели проекта
 Код написан в образовательных целях на онлайн-курсе для веб-разработчиков [Devman](https://dvmn.org).
