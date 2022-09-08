@@ -39,6 +39,7 @@ cp .env.example .env
   <summary>Переменные окружения</summary>
   <pre>
     TG_BOT_TOKEN=
+    VK_GROUP_TOKEN=
     PROJECT_ID=
     GOOGLE_APPLICATION_CREDENTIALS=
     LOGGING_LEVEL=ERROR
@@ -46,6 +47,8 @@ cp .env.example .env
 </details>
 
 *** Для работы telegram чат-бота необходимо заполнить переменную окружения `TG_BOT_TOKEN`. ***
+
+*** Для работы vk чат-бота необходимо заполнить переменную окружения `VK_GROUP_TOKEN` . Также нужно создать новое сообщество в [vk.com](https://vk.com) и разрешить боту отправку сообщений в настройках сообщества.***
 
 *** Для интеграции с DialogFlow необходимо сначала создать новый проект и агента (затем указать переменную окружения `PROJECT_ID`). Далее создать и заполнить свою группу `intents`.
 [Подробнее, как создать проект и настроить агента](https://cloud.google.com/dialogflow/es/docs/quick/build-agent) ***
