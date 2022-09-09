@@ -43,13 +43,14 @@ cp .env.example .env
     VK_GROUP_TOKEN=
     PROJECT_ID=
     GOOGLE_APPLICATION_CREDENTIALS=
+    STORAGE_FILE_URL=https://dvmn.org/media/filer_public/a7/db/a7db66c0-1259-4dac-9726-2d1fa9c44f20/questions.json
     LOGGING_LEVEL=ERROR
   </pre>
 </details>
 
 *** Для работы telegram чат-бота необходимо заполнить переменную окружения `TG_BOT_TOKEN`, `TG_CHAT_ID` . ***
 
-*** Для работы vk чат-бота необходимо заполнить переменную окружения `VK_GROUP_TOKEN` . Также нужно создать новое сообщество в [vk.com](https://vk.com) и разрешить боту отправку сообщений в настройках сообщества.***
+*** Для работы vk чат-бота необходимо заполнить переменную окружения `VK_GROUP_TOKEN` . Также нужно создать новое сообщество в [vk.com](https://vk.com) и разрешить боту отправку сообщений в настройках сообщества. ***
 
 *** Для интеграции с DialogFlow необходимо сначала создать новый проект и агента (затем указать переменную окружения `PROJECT_ID`). Далее создать и заполнить свою группу `intents`.
 [Подробнее, как создать проект и настроить агента](https://cloud.google.com/dialogflow/es/docs/quick/build-agent) ***
@@ -65,10 +66,21 @@ isort . && flake8 . && mypy .
 -  Для обучения агента в проекте DialogFlow необходимо создать новый набор `intents`.
 -  Для этого сначала нужно подготовить файл с набором новых `intents`. В качестве примера можно посмотреть структуру `JSON` файла по адресу:
 [https://dvmn.org/media/...](https://dvmn.org/media/filer_public/a7/db/a7db66c0-1259-4dac-9726-2d1fa9c44f20/questions.json)
+- 
 - После подготовки данного файла (по умолчанию, будет сохранен под именем `questions.json` в текущей папке) вводим команду:
 ```
 python3 generate_intents.py
 ```
+
+- Есть возможность указать значение пути локального `json` файла, для загрузки новых `intents`:
+- `-J` или `--json-path` c указанием пути локального `json` файла. По умолчанию значение равно `None`.
+
+В случае, если указана переменная окружения `STORAGE_FILE_URL` с указанием местоположения файла, то файл будет скачан в корне проекта, под именем `questions.json`.
+
+```
+python3 generate_intents.py -J /home/user/samples.json
+```
+
 - Новые `intents` для обучения агента для DialogFlow готовы, теперь все готово для запуска чат-бота по распознаванию речи.
 
 *** При появлении ошибок типа `PermissionDenied: 403 IAM permission` 'dialogflow.intents.create'... необходимо в настройках к `JSON` ключу добавить новую роль: `DialogFlow Intent Admin` на странице [https://console.cloud.google.com/iam-admin/](https://console.cloud.google.com/iam-admin/iam?project=) ***

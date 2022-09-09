@@ -1,13 +1,15 @@
 import sys
 from pathlib import Path
+from typing import Optional
 
 from pathvalidate import sanitize_filepath
-from pydantic import BaseSettings, validator
+from pydantic import AnyUrl, BaseSettings, validator
 
 LEVELS = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 
 
 class Settings(BaseSettings):
+    STORAGE_FILE_URL: Optional[AnyUrl] = None
     LOGGING_LEVEL: str = "WARNING"
 
     @validator("LOGGING_LEVEL")
