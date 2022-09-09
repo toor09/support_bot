@@ -12,7 +12,6 @@ from dialog_flow import detect_intent_texts
 from settings import LOGGING_CONFIG, DialogFlowSettings, VKBotSettings
 
 logger = logging.getLogger(__file__)
-logging.config.dictConfig(LOGGING_CONFIG)
 
 
 def echo(event: Event, vk_api: Any, project_id: str) -> None:
@@ -67,4 +66,5 @@ def start() -> None:
 
 
 if __name__ == "__main__":
+    logging.config.dictConfig(LOGGING_CONFIG)
     start()

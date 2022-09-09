@@ -17,7 +17,6 @@ from dialog_flow import detect_intent_texts
 from settings import LOGGING_CONFIG, DialogFlowSettings, TelegramBotSettings
 
 logger = logging.getLogger(__file__)
-logging.config.dictConfig(LOGGING_CONFIG)
 
 
 def start(update: Update, context: CallbackContext) -> None:
@@ -89,4 +88,5 @@ def main() -> None:
 
 
 if __name__ == '__main__':
+    logging.config.dictConfig(LOGGING_CONFIG)
     main()
