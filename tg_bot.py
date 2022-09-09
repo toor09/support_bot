@@ -39,8 +39,8 @@ def help_command(update: Update, context: CallbackContext) -> None:
     logger.debug(msg=message)
 
 
-def echo(update: Update, context: CallbackContext) -> None:
-    """Echo the user message."""
+def send_message(update: Update, context: CallbackContext) -> None:
+    """Send message for user.."""
     settings = DialogFlowSettings()
     user = update.effective_user
     try:
@@ -80,7 +80,7 @@ def main() -> None:
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help_command))
     dispatcher.add_handler(
-        MessageHandler(Filters.text & ~Filters.command, echo)
+        MessageHandler(Filters.text & ~Filters.command, send_message)
     )
 
     updater.start_polling()

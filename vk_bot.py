@@ -14,8 +14,8 @@ from settings import LOGGING_CONFIG, DialogFlowSettings, VKBotSettings
 logger = logging.getLogger(__file__)
 
 
-def echo(event: Event, vk_api: Any, project_id: str) -> None:
-    """Echo the user message."""
+def send_message(event: Event, vk_api: Any, project_id: str) -> None:
+    """Send message for user."""
     try:
         dialog_flow_answer, is_fallback = detect_intent_texts(
             project_id=project_id,
@@ -58,7 +58,7 @@ def start() -> None:
     )
     for event in long_poll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            echo(
+            send_message(
                 event=event,
                 vk_api=vk_api,
                 project_id=df_settings.PROJECT_ID
