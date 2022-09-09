@@ -35,11 +35,11 @@ def send_message(event: Event, vk_api: Any, project_id: str) -> None:
 
     except DefaultCredentialsError:
         message = "Something is wrong with connecting to DialogFlow :("
-        logger.error(msg=message, exc_info=True)
+        logger.exception(msg=message)
 
     except vk_api.exceptions.ApiError:
         message = "Something is wrong with connecting to vk_api :("
-        logger.error(msg=message, exc_info=True)
+        logger.exception(msg=message)
 
 
 def start() -> None:

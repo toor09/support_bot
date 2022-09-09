@@ -57,11 +57,11 @@ def send_message(update: Update, context: CallbackContext) -> None:
 
     except DefaultCredentialsError:
         message = "Something is wrong with connecting to DialogFlow :("
-        logger.error(msg=message, exc_info=True)
+        logger.exception(msg=message)
 
     except telegram.error.NetworkError:
         message = "Something went wrong :("
-        logger.error(msg=message, exc_info=True)
+        logger.exception(msg=message)
 
 
 def main() -> None:
