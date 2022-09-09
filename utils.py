@@ -34,15 +34,13 @@ def get_training_phrases(filename: str = "questions.json") -> dict:
 def get_intents(training_phrases: dict) -> List[Intent]:
     """Get collection of new intents."""
     intents = []
-    for training_phrase in training_phrases:
-        display_name = training_phrase
+    for display_name, training_phrase in training_phrases.items():
         new_intent = Intent(
-            display_name=training_phrase,
-            training_phrases=training_phrases[display_name]["questions"],
-            text_messages=[training_phrases[display_name]["answer"]],
+            display_name=display_name,
+            training_phrases=training_phrase["questions"],
+            text_messages=[training_phrase["answer"]],
         )
         intents.append(new_intent)
-
     return intents
 
 

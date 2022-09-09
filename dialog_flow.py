@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Tuple
 
 from google.cloud import dialogflow
 from google.cloud.dialogflow import DetectIntentResponse
@@ -7,29 +7,26 @@ from google.cloud.dialogflow import DetectIntentResponse
 def detect_intent_texts(
         project_id: str,
         session_id: str,
-        texts: List[str],
-        language_code: str,
-        skip_fallback: bool = False
-) -> Optional[DetectIntentResponse]:
-    """Returns the result of detect intent with texts as inputs.
+        text: str,
+        language_code: str
+) -> Tuple[DetectIntentResponse, bool]:
+    """Returns the result of detect intent with texts as inputs and
+    response.query_result.intent.is_fallback.
     Using the same `session_id` between requests allows continuation
     of the conversation."""
 
     session_client = dialogflow.SessionsClient()
     session = session_client.session_path(project_id, session_id)
 
-    for text in texts:
-        text_input = dialogflow.TextInput(
-            text=text,
-            language_code=language_code
-        )
-        query_input = dialogflow.QueryInput(text=text_input)
-        response = session_client.detect_intent(
-            request={"session": session, "query_input": query_input}
-        )
-    if skip_fallback and response.query_result.intent.is_fallback:
-        return None
-    return response.query_result.fulfillment_text
+    text_input = dialogflow.TextInput(text=text, language_code=language_code)
+    query_input = dialogflow.QueryInput(text=text_input)
+    response = session_client.detect_intent(
+        request={"session": session, "query_input": query_input}
+    )
+
+    return (response.query_result.fulfillment_text,
+            response.query_result.intent.is_fallback
+            )
 
 
 def create_intent(

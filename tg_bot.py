@@ -45,10 +45,10 @@ def echo(update: Update, context: CallbackContext) -> None:
     settings = DialogFlowSettings()
     user = update.effective_user
     try:
-        dialog_flow_answer = detect_intent_texts(
+        dialog_flow_answer, _ = detect_intent_texts(
                 project_id=settings.PROJECT_ID,
                 session_id=user.id,  # type: ignore
-                texts=[update.message.text],
+                text=update.message.text,
                 language_code="ru",
         )
         update.message.reply_text(f"{dialog_flow_answer}")

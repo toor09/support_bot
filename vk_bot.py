@@ -18,14 +18,13 @@ logging.config.dictConfig(LOGGING_CONFIG)
 def echo(event: Event, vk_api: Any, project_id: str) -> None:
     """Echo the user message."""
     try:
-        dialog_flow_answer = detect_intent_texts(
+        dialog_flow_answer, is_fallback = detect_intent_texts(
             project_id=project_id,
             session_id=event.user_id,
-            texts=[event.text],
-            language_code="ru",
-            skip_fallback=True
+            text=event.text,
+            language_code="ru"
         )
-        if dialog_flow_answer:
+        if not is_fallback:
             vk_api.messages.send(
                 user_id=event.user_id,
                 message=f"{dialog_flow_answer}",
