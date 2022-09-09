@@ -1,8 +1,12 @@
 import os
 
 from dialog_flow import create_intent
+from intents_operations import (
+    download_training_phrases,
+    get_intents,
+    get_training_phrases
+)
 from settings import DialogFlowSettings
-from utils import download_training_phrases, get_intents, get_training_phrases
 
 
 def main() -> None:

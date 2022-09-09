@@ -1,10 +1,8 @@
 import json
-import logging
 from collections import namedtuple
 from typing import List
 
 import requests
-import telegram
 
 Intent = namedtuple(
     "Intent",
@@ -12,16 +10,16 @@ Intent = namedtuple(
 )
 
 
-class TelegramLogsHandler(logging.Handler):
-    """Custom telegram handler for logging."""
-    def __init__(self, token: str, chat_id: str) -> None:
-        super().__init__()
-        self.token = token
-        self.chat_id = chat_id
+def download_training_phrases(
+        url: str,
+        filename: str
+) -> None:
+    """Download training phrases from remote storage."""
+    training_phrases = requests.get(url=url)
+    training_phrases.raise_for_status()
 
-    def emit(self, record: logging.LogRecord) -> None:
-        tg_bot = telegram.Bot(token=self.token)
-        tg_bot.send_message(chat_id=self.chat_id, text=self.format(record))
+    with open(file=filename, mode="wb") as file:
+        file.write(training_phrases.content)
 
 
 def get_training_phrases(filename: str = "questions.json") -> dict:
@@ -42,15 +40,3 @@ def get_intents(training_phrases: dict) -> List[Intent]:
         )
         intents.append(new_intent)
     return intents
-
-
-def download_training_phrases(
-        url: str,
-        filename: str
-) -> None:
-    """Download training phrases from remote storage."""
-    training_phrases = requests.get(url=url)
-    training_phrases.raise_for_status()
-
-    with open(file=filename, mode="wb") as file:
-        file.write(training_phrases.content)

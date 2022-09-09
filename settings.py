@@ -77,7 +77,7 @@ LOGGING_CONFIG = {
             "backupCount": 10,
         },
         "telegram_bot": {
-            "class": "utils.TelegramLogsHandler",
+            "class": "custom_log_handlers.TelegramLogsHandler",
             "token": TelegramBotSettings().TG_BOT_TOKEN,
             "chat_id": TelegramBotSettings().TG_CHAT_ID,
             "level": Settings().LOGGING_LEVEL,
