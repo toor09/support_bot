@@ -2,9 +2,9 @@ import logging
 import logging.config
 import os
 
-import telegram.error
 from google.auth.exceptions import DefaultCredentialsError
 from telegram import ForceReply, Update
+from telegram.error import TelegramError
 from telegram.ext import (
     CallbackContext,
     CommandHandler,
@@ -40,15 +40,15 @@ def help_command(update: Update, context: CallbackContext) -> None:
 
 
 def send_message(update: Update, context: CallbackContext) -> None:
-    """Send message for user.."""
+    """Send message for user."""
     settings = DialogFlowSettings()
     user = update.effective_user
     try:
         dialog_flow_answer, _ = detect_intent_texts(
-                project_id=settings.PROJECT_ID,
-                session_id=user.id,  # type: ignore
-                text=update.message.text,
-                language_code="ru",
+            project_id=settings.PROJECT_ID,
+            session_id=user.id,  # type: ignore
+            text=update.message.text,
+            language_code="ru",
         )
         update.message.reply_text(f"{dialog_flow_answer}")
         message = f"Support tg_bot send echo message:" \
@@ -59,7 +59,7 @@ def send_message(update: Update, context: CallbackContext) -> None:
         message = "Something is wrong with connecting to DialogFlow :("
         logger.exception(msg=message)
 
-    except telegram.error.NetworkError:
+    except TelegramError:
         message = "Something went wrong :("
         logger.exception(msg=message)
 

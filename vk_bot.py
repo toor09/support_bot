@@ -6,6 +6,7 @@ from typing import Any
 
 from google.auth.exceptions import DefaultCredentialsError
 from vk_api import VkApi
+from vk_api.exceptions import ApiError
 from vk_api.longpoll import Event, VkEventType, VkLongPoll
 
 from dialog_flow import detect_intent_texts
@@ -16,30 +17,22 @@ logger = logging.getLogger(__file__)
 
 def send_message(event: Event, vk_api: Any, project_id: str) -> None:
     """Send message for user."""
-    try:
-        dialog_flow_answer, is_fallback = detect_intent_texts(
-            project_id=project_id,
-            session_id=event.user_id,
-            text=event.text,
-            language_code="ru"
+
+    dialog_flow_answer, is_fallback = detect_intent_texts(
+        project_id=project_id,
+        session_id=event.user_id,
+        text=event.text,
+        language_code="ru"
+    )
+    if not is_fallback:
+        vk_api.messages.send(
+            user_id=event.user_id,
+            message=f"{dialog_flow_answer}",
+            random_id=randint(1, 1000)
         )
-        if not is_fallback:
-            vk_api.messages.send(
-                user_id=event.user_id,
-                message=f"{dialog_flow_answer}",
-                random_id=randint(1, 1000)
-            )
-        message = f"Support vk_bot send echo message:" \
-                  f"{event.text=} {dialog_flow_answer=}"
-        logger.debug(msg=message)
-
-    except DefaultCredentialsError:
-        message = "Something is wrong with connecting to DialogFlow :("
-        logger.exception(msg=message)
-
-    except vk_api.exceptions.ApiError:
-        message = "Something is wrong with connecting to vk_api :("
-        logger.exception(msg=message)
+    message = f"Support vk_bot send echo message:" \
+              f"{event.text=} {dialog_flow_answer=}"
+    logger.debug(msg=message)
 
 
 def start() -> None:
@@ -58,11 +51,19 @@ def start() -> None:
     )
     for event in long_poll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            send_message(
-                event=event,
-                vk_api=vk_api,
-                project_id=df_settings.PROJECT_ID
-            )
+            try:
+                send_message(
+                    event=event,
+                    vk_api=vk_api,
+                    project_id=df_settings.PROJECT_ID
+                )
+            except DefaultCredentialsError:
+                message = "Something is wrong with connecting to DialogFlow :("
+                logger.exception(msg=message)
+
+            except ApiError:
+                message = "Something is wrong with connecting to vk_api :("
+                logger.exception(msg=message)
 
 
 if __name__ == "__main__":
