@@ -2,9 +2,7 @@ import logging
 import logging.config
 import os
 
-from google.auth.exceptions import DefaultCredentialsError
 from telegram import ForceReply, Update
-from telegram.error import TelegramError
 from telegram.ext import (
     CallbackContext,
     CommandHandler,
@@ -17,6 +15,11 @@ from dialog_flow import detect_intent_texts
 from settings import LOGGING_CONFIG, DialogFlowSettings, TelegramBotSettings
 
 logger = logging.getLogger(__file__)
+
+
+def error_handler(update: Update, context: CallbackContext) -> None:
+    message = "К сожалению, произошла ошибка в момент обработки сообщения."
+    logger.exception(msg=message)
 
 
 def start(update: Update, context: CallbackContext) -> None:
@@ -43,25 +46,16 @@ def send_message(update: Update, context: CallbackContext) -> None:
     """Send message for user."""
     settings = DialogFlowSettings()
     user = update.effective_user
-    try:
-        dialog_flow_answer, _ = detect_intent_texts(
+    dialog_flow_answer, _ = detect_intent_texts(
             project_id=settings.PROJECT_ID,
             session_id=user.id,  # type: ignore
             text=update.message.text,
             language_code="ru",
-        )
-        update.message.reply_text(f"{dialog_flow_answer}")
-        message = f"Support tg_bot send echo message:" \
-                  f"{update.message.text=} {dialog_flow_answer=}"
-        logger.debug(msg=message)
-
-    except DefaultCredentialsError:
-        message = "Something is wrong with connecting to DialogFlow :("
-        logger.exception(msg=message)
-
-    except TelegramError:
-        message = "Something went wrong :("
-        logger.exception(msg=message)
+    )
+    update.message.reply_text(f"{dialog_flow_answer}")
+    message = f"Support tg_bot send echo message:" \
+              f"{update.message.text=} {dialog_flow_answer=}"
+    logger.debug(msg=message)
 
 
 def main() -> None:
@@ -82,6 +76,7 @@ def main() -> None:
     dispatcher.add_handler(
         MessageHandler(Filters.text & ~Filters.command, send_message)
     )
+    dispatcher.add_error_handler(error_handler)
 
     updater.start_polling()
     updater.idle()
